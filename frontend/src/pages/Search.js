@@ -16,17 +16,21 @@ function Search(props) {
     const handleInputChange = (e) => {
       e.preventDefault();
       setSearchInput(e.target.value);
-  
-      GetQnAList(e.target.value)
-          .then((data) => {
-              setResults(data.results);
-              setTags(data.tags);
-          })
-          .catch((error) => {
-              console.error(error);
-          })
     };
   
+    const handleClick = (e) => {
+      e.preventDefault();
+      if (!searchInput) return;
+      GetQnAList(searchInput)
+      .then((data) => {
+          setResults(data.results);
+          setTags(data.tags);
+      })
+      .catch((error) => {
+          console.error(error);
+      })
+    };
+
     const handleTagFilter = (tag) => {
       if (chosenTags.includes(tag)) {
         setChosenTags(chosenTags.filter((t) => t !== tag));
@@ -45,8 +49,8 @@ function Search(props) {
         <Stack spacing={2} sx={{ mt: 5 }} alignItems="center">
           <Box sx={{ width: { xs: 400, sm: 600, md: 700, lg: 700 } }}>
             <SearchBar onChange={handleInputChange} />
-            <Button>
-                
+            <Button variant="outlined" onClick={handleClick} color="primary">
+              Search
             </Button>
           </Box>
           <Box sx={{ml: 3}}>

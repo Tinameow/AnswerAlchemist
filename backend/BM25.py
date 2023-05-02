@@ -1,30 +1,21 @@
 import numpy as np
 from collections import Counter
-from nltk.tokenize import word_tokenize
-import nltk
+# from nltk.tokenize import word_tokenize
 from build_model import readQuestions
 from build_model import readAnswers
 from build_model import readTags
+from gensim.utils import tokenize as tk
 
-import nltk
-import ssl
-
-try:
-    _create_unverified_https_context = ssl._create_unverified_context
-except AttributeError:
-    pass
-else:
-    ssl._create_default_https_context = _create_unverified_https_context
-
-nltk.download()
 
 def tokenize(original_list):
-
+    # print(original_list)
     res_list = []
     for i in range(len(original_list)):
         sentence = original_list[i]
-        words = word_tokenize(sentence)
+        words = list(tk(sentence))
         res_list.append(words)
+        # print(words)
+        # break
 
     return res_list
 
@@ -68,6 +59,7 @@ class bm25Model:
     def compute_score(self, index, query):
         score = 0.0
         num_of_word_in_doc = len(self.f[index])
+        # print("query:", query)
         qf = Counter(query)
         for word in query:
             if word not in self.f[index]:
@@ -137,7 +129,7 @@ if __name__ == '__main__':
     readTags(filepath_T, my_dict)
 
 
-    print(len(list(my_dict.keys())))
+    # print(len(list(my_dict.keys())))
     key_list = []
     title_list = []
     for key in list(my_dict.keys()):
@@ -152,11 +144,14 @@ if __name__ == '__main__':
     # print(title_list_after_tok[1])
     # print(title_list_after_tok[2])
 
-    query = ['one', 'in', 'statement', 'and']
-
+    query = ['good']
+    # q = "one word".strip().split()
+    # print(q)
+    # query = tokenize(q)
+    
     my_model = bm25Model()
     my_model.input_document(title_list_after_tok[0:10])
-    print(my_model.idf)
+    # print(my_model.idf)
     score_list = my_model.get_score_list(query)
 
     print(score_list[0:10])
