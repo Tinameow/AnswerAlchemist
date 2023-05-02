@@ -21,4 +21,17 @@ const GetQnAList = (keywords=null, limit=100, offset=0) => {
     })
 }
 
-export {GetQnAList};
+const GetQnA = (id) => {
+  return new Promise((resolve, reject) => {
+    axios
+    .get(baseURL+'/question/'+id)
+    .then(response => {
+      resolve(response.data.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  })
+}
+
+export {GetQnAList, GetQnA};

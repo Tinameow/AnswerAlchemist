@@ -15,6 +15,27 @@ def get_filter():
     items = util.filter_ranked_answers(tag)
     return jsonify(items)
 
+@app.route('/question/<int:question_id>', methods=['GET'])
+def get_question(question_id):
+    # use the question_id parameter to retrieve the question details from a database or other data source
+    # for now, we'll just return the mock data
+    # mock data
+    mock_question = {
+        "id": 1,
+        "question": {
+            "title" : "Question title",
+            "description" : "Question description",
+            "tags": ["Python", "Tuple"],
+            "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        },
+        "answers": [ {"answer":"A answer to the question", 
+                      "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, 
+                      {"answer":"Another answer to the question", 
+                      "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}],
+    }
+    return jsonify({"data": mock_question})
+
+
 @app.route('/search', methods=['GET'])
 def search():
     keywords = request.args.get('keywords', None)

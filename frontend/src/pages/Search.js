@@ -71,7 +71,6 @@ function Search(props) {
                     style={{ textDecoration: "none", color: "white" }}
                     key={item.id}
                     id={item.id}
-                    data={item}
                     to={`../question/${item.id}`}
                   >
                     <QnAItem key={item.id} id={item.id} data={item} />

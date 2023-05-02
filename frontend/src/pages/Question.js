@@ -1,58 +1,114 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box, Grid, Divider } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Chip,
+  Button
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
+import {GetQnA} from '../api/API';
+
+
+const TagsWrapper = styled(Box)({
+  margin: '0.2rem 1rem',
+  display: 'flex',
+  flexWrap: 'wrap',
+  '& > *': {
+    marginRight: '0.5rem',
+    marginBottom: '0.5rem',
+  },
+});
+
+const Tag = styled(Chip)({
+  cursor: 'pointer',
+});
+
+const QuestionWrapper = styled(Box)({
+  margin: '1rem',
+  padding: '1rem',
+  backgroundColor: '#f0f0f0',
+  borderRadius: '0.5rem',
+});
+
+const AnswerWrapper = styled(Box)({
+  margin: '1rem',
+  padding: '1rem',
+  backgroundColor: '#f8f8f8',
+  borderRadius: '0.5rem',
+});
+
+const QuestionTitle = styled(Typography)({
+  fontWeight: 'bold',
+  fontSize: '1.5rem',
+  marginBottom: '1rem',
+});
+
+const QuestionDescription = styled(Typography)({
+  fontSize: '1.2rem',
+  marginBottom: '1rem',
+});
+
+const Answer = styled(Typography)({
+  fontSize: '1.2rem',
+  marginBottom: '1rem',
+});
+
+const AnswerDate = styled(Typography)({
+  color: '#666',
+});
 
 function QuestionDetail(props) {
   const { id } = useParams();
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
-  
-  // const tags = props.data.tags;
-  // const question = props.data.question.title;
-  // const answer = props.data.answer;
-  // const created = props.data.created;
 
   function handleClick() {
     window.history.back();
   }
 
   useEffect(() => {
-    // Here you could fetch the question and its answers from an API based on the `id` parameter
-    // and set the state accordingly. For example:
-    // fetch(`api/questions/${id}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     setQuestion(data.question);
-    //     setAnswers(data.answers);
-    //   });
-    // For this example, we'll just set some dummy data:
-    setQuestion({
-      title: 'What is the best way to learn React?',
-      tags: ['react', 'javascript', 'web-development'],
-      created: '2022-05-10 10:30:00',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac metus sed ligula sagittis elementum eget vel augue. Praesent interdum purus nec urna dictum, nec efficitur ipsum finibus. Aliquam in mauris nec quam vehicula malesuada. Etiam blandit ex a turpis malesuada, eget dapibus sapien finibus. Nulla facilisi. Suspendisse potenti. Vestibulum id nibh vel mauris congue dapibus. Quisque eget quam nulla. Vestibulum convallis metus et dolor tristique, quis tempor odio interdum.',
-    });
-    setAnswers([
-      {
-        id: 1,
-        created: '2022-05-10 11:15:00',
-        content: 'There are many great resources to learn React, such as the official documentation, online tutorials, and books. I personally recommend starting with the official tutorial on the React website.',
-      },
-      {
-        id: 2,
-        created: '2022-05-10 12:00:00',
-        content: 'I agree with the previous answer. Another great way to learn React is to work on projects and practice building real-world applications.',
-      },
-    ]);
+    GetQnA(id)
+      .then((data) => {
+          setQuestion(data.question);
+          setAnswers(data.answers);
+      })
+      .catch((error) => {
+          console.error(error);
+      })
+    
   }, [id]);
+  
 
   return (
-    <>
-    Not implemented Yet
-    <button onClick={handleClick}>Go back</button>
+    <> 
+    { question && 
+    (<Box>
+      <QuestionWrapper>
+        <QuestionTitle variant="h1">{question.title}</QuestionTitle>
+        <QuestionDescription>{question.description}</QuestionDescription>
+        <TagsWrapper>
+          {question.tags?.map((tag) => (
+            <Tag key={tag} label={tag} />
+          ))}
+        </TagsWrapper>
+        <Typography variant="subtitle2" align="right">Created: {question.created}</Typography>
+      </QuestionWrapper>
+      
+      { answers?.map((answer, index) => {
+          return (
+            <AnswerWrapper key={index}>
+              <Answer variant="body1">{answer.answer}</Answer>
+              <AnswerDate variant="subtitle2" align="right">Created: {answer.created}</AnswerDate>
+            </AnswerWrapper>
+      )})
+      }
+    </Box>)}
+    <Box display="flex" justifyContent="center">
+      <Button variant="outlined" onClick={handleClick} color="primary">Go back</Button>
+    </Box>
     </>
-    
   );
 }
 
