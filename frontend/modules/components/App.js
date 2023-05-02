@@ -14,7 +14,7 @@ function App() {
 	useEffect(() => {
 		// Using fetch to fetch the api from
 		// flask server it will be redirected to proxy
-		fetch("/data").then((res) =>
+		fetch("/filter").then((res) =>
         res.json().then((data) => {
             // Setting the list of items from api
             const items = data.items.map((item) => ({
