@@ -1,5 +1,5 @@
 import './App.css';
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NoMatch from './pages/NoMatch';
 import Search from "./pages/Search";
@@ -25,14 +25,14 @@ function Footer() {
 
 function App() {
   return (
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/search" element={<Search />} />
         <Route path="/question/:id" element={<Question />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
       {/* <Footer />    */}
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

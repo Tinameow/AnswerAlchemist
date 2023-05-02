@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
 
-function Question() {
+function Question(props) {
+  // const tags = props.data.tags;
+  // const question = props.data.question.title;
+  // const answer = props.data.answer;
+  // const created = props.data.created;
+
+  function handleClick() {
+    window.history.back();
+  }
+
   return (
-    <div>
-      <h2>Question & Answer Detail Page</h2>
-    </div>
+    <button onClick={handleClick}>Go back</button>
   );
 }
 

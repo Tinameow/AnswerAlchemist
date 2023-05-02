@@ -21,4 +21,6 @@ const GetQnAList = (keywords=null, ids=null, limit=100, offset=0) => {
         reject(err);
       });
     })
-  }
+}
+
+export {GetQnAList};
