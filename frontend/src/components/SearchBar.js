@@ -57,6 +57,7 @@ function SearchBar (props) {
         placeholder={props.placeholder || "Search…"}
         inputProps={{ 'aria-label': 'search' }}
         onChange={props.onChange}
+        onKeyPress={props.onKeyPress}
       />
     </Search>
   );

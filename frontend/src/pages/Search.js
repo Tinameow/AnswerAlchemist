@@ -38,6 +38,21 @@ function Search(props) {
         setChosenTags([...chosenTags, tag]);
       }
     };
+
+    function handleKeyPress(event) {
+      if (event.key !== "Enter") {
+        return;
+      }
+      if (!searchInput) return;
+      GetQnAList(searchInput)
+      .then((data) => {
+          setResults(data.results);
+          setTags(data.tags);
+      })
+      .catch((error) => {
+          console.error(error);
+      })
+    }
   
     const filteredResults = results.filter((item) => {
       return chosenTags.every((tag) => item.tags.includes(tag));
@@ -48,12 +63,12 @@ function Search(props) {
       <>
         <Stack spacing={2} sx={{ mt: 5 }} alignItems="center">
           <Box sx={{ width: { xs: 400, sm: 600, md: 700, lg: 700 } }}>
-            <SearchBar onChange={handleInputChange} />
-            <Button variant="outlined" onClick={handleClick} color="primary">
+            <SearchBar onChange={handleInputChange} onKeyPress={handleKeyPress} />
+            {/* <Button variant="outlined" onClick={handleClick} color="primary">
               Search
-            </Button>
-          </Box>
-          <Box sx={{ml: 3}}>
+            </Button> */}
+        </Box>
+          <Box sx={{p: 3}}>
             {tags.map((tag) => (
               <Chip
                 key={tag}

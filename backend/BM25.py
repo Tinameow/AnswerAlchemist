@@ -108,8 +108,9 @@ def query(query):
 
     # print(score_list[0:10])
 
-    combined_list = list(zip(key_list, score_list))
-    sorted_combined_list = sorted(combined_list, key=lambda x: x[1])
+    combined_list = [(k, s) for k, s in zip(key_list, score_list) if s > 0]
+    # combined_list = list(zip(key_list, score_list))
+    sorted_combined_list = sorted(combined_list, reverse=True, key=lambda x: x[1])
     sorted_key_list = [x[0] for x in sorted_combined_list]
     # print(sorted_key_list[0:10])
 
@@ -144,7 +145,7 @@ if __name__ == '__main__':
     # print(title_list_after_tok[1])
     # print(title_list_after_tok[2])
 
-    query = ['good']
+    query = ['Good']
     # q = "one word".strip().split()
     # print(q)
     # query = tokenize(q)
@@ -157,6 +158,6 @@ if __name__ == '__main__':
     print(score_list[0:10])
 
     combined_list = list(zip(key_list, score_list))
-    sorted_combined_list = sorted(combined_list, key=lambda x: x[1])
+    sorted_combined_list = sorted(combined_list, reverse=True,  key=lambda x: x[1])
     sorted_key_list = [x[0] for x in sorted_combined_list]
     print(sorted_key_list[0:10])
