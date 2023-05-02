@@ -34,6 +34,7 @@ const TagsWrapper = styled('div')({
   margin: '0.2rem 1rem',
   display: 'flex',
   flexWrap: 'wrap',
+  paddingRight: '1rem',
   '& > *': {
     marginRight: '0.5rem',
     marginBottom: '0.5rem',

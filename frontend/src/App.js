@@ -1,9 +1,8 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import NoMatch from './pages/NoMatch';
 import Search from "./pages/Search";
-import Question from "./pages/Question";
+import QuestionDetail from "./pages/Question";
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
 
 function Footer() {
@@ -28,7 +27,7 @@ function App() {
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/search" element={<Search />} />
-        <Route path="/question/:id" element={<Question />} />
+        <Route path="/question/:id" element={<QuestionDetail />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
       {/* <Footer />    */}

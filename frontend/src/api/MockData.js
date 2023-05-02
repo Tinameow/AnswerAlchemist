@@ -1,4 +1,4 @@
-const mock_data = [
+const mock_results = [
   {
     "id": 1,
     "question": {"title" : "Question title",
@@ -14,9 +14,11 @@ const mock_data = [
                 "description" : "Question description"
               },
     "answer": "A answer to the question",
-    "tags": ["Python", "Tuple"],
+    "tags": ["Python", "List"],
     "created": Date.now()
   }
 ]
 
-export {mock_data};
+const mock_tags = ["Python", "Tuple", "List"];
+
+export {mock_results, mock_tags};

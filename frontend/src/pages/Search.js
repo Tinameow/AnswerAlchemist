@@ -4,28 +4,25 @@ import {Box, Stack, Chip} from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import QnAItem from '../components/QnAItem';
 import {GetQnAList} from '../api/API';
-import {mock_results, mock_tags} from '../api/MockData';
+// import {mock_results, mock_tags} from '../api/MockData';
 
 
 function Search(props) {
-    const [searchInput, setSearchInput] = useState("");
-    const [results, setResults] = useState(mock_results);
-    const [tags, setTags] = useState(mock_tags);
-    const [chosenTags, setChosenTags] = useState(["Python"]);
+    const [results, setResults] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [chosenTags, setChosenTags] = useState([]);
   
     const handleInputChange = (e) => {
       e.preventDefault();
-      setSearchInput(e.target.value);
-      setResults(mock_results);
   
-      // GetQnAList(e.target.value)
-      //     .then((result) => {
-      //         setResults(result.results);
-      //         setTags(results.tags);
-      //     })
-      //     .catch((error) => {
-      //         console.error(error);
-      //     })
+      GetQnAList(e.target.value)
+          .then((data) => {
+              setResults(data.results);
+              setTags(data.tags);
+          })
+          .catch((error) => {
+              console.error(error);
+          })
     };
   
     const handleTagFilter = (tag) => {
