@@ -1,0 +1,524 @@
+Id,OwnerUserId,CreationDate,ParentId,Score,Body
+92,61,2008-08-01T14:45:37Z,90,13,"<p><a href=""http://svnbook.red-bean.com/"">Version Control with Subversion</a></p>
+
+<p>A very good resource for source control in general. Not really TortoiseSVN specific, though.</p>"
+124,26,2008-08-01T16:09:47Z,80,12,"<p>I wound up using this. It is a kind of a hack, but it actually works pretty well. The only thing is you have to be very careful with your semicolons. : D</p>
+
+<pre><code>var strSql:String = stream.readUTFBytes(stream.bytesAvailable);      
+var i:Number = 0;
+var strSqlSplit:Array = strSql.split("";"");
+for (i = 0; i &lt; strSqlSplit.length; i++){
+    NonQuery(strSqlSplit[i].toString());
+}
+</code></pre>
+"
+199,50,2008-08-01T19:36:46Z,180,1,"<p>I've read somewhere the human eye can't distinguish between less than 4 values apart. so This is something to keep in mind. The following algorithm does not compensate for this.</p>
+
+<p>I'm not sure this is exactly what you want, but this is one way to randomly generate non-repeating color values:</p>
+
+<p>(beware, inconsistent pseudo-code ahead)</p>
+
+<pre><code>//colors entered as 0-255 [R, G, B]<br>colors = []; //holds final colors to be used<br>rand = new Random();<br><br>//assumes n is less than 16,777,216<br>randomGen(int n){<br>   while (len(colors) &lt; n){<br>      //generate a random number between 0,255 for each color<br>      newRed = rand.next(256);<br>      newGreen = rand.next(256);<br>      newBlue = rand.next(256);<br>      temp = [newRed, newGreen, newBlue];<br>      //only adds new colors to the array<br>      if temp not in colors {<br>         colors.append(temp);<br>      }<br>   }<br>}<br></code></pre>
+
+<p>One way you could optimize this for better visibility would be to compare the distance between each new color and all the colors in the array:</p>
+
+<pre><code>for item in color{<br>   itemSq = (item[0]^2 + item[1]^2 + item[2]^2])^(.5);<br>   tempSq = (temp[0]^2 + temp[1]^2 + temp[2]^2])^(.5);<br>   dist = itemSq - tempSq;<br>   dist = abs(dist);<br>}<br>//NUMBER can be your chosen distance apart.<br>if dist &lt; NUMBER and temp not in colors {<br>   colors.append(temp);<br>}<br></code></pre>
+
+<p>But this approach would significantly slow down your algorithm.</p>
+
+<p>Another way would be to scrap the randomness and systematically go through every 4 values and add a color to an array in the above example.</p>"
+269,91,2008-08-01T23:49:57Z,260,4,"<p>Yes, I thought about that, but I soon figured out that another Domain-Specific-Language (DSL) would be a bit too much.</p>
+
+<p>Essentially, they need to interact with my gamestate in possibly unpredictable ways. For example, a card could have a rule ""When this cards enter play, all your undead minions gain +3 attack against flying enemies, except when the enemy is blessed"". As trading card games are turn based, the GameState Manager will fire OnStageX events and let the cards modify other cards or the GameState in whatever way the card needs.</p>
+
+<p>If I try to create a DSL, I have to implement a rather large feature set and possibly constantly update it, which shifts the maintenance work to another part without actually removing it.</p>
+
+<p>That's why I wanted to stay with a ""real"" .NET language to essentially be able to just fire the event and let the card manipulate the gamestate in whatever way (within the limits of the code access security).</p>
+"
+307,49,2008-08-02T01:49:46Z,260,28,"<p><a href=""http://www.codeproject.com/Articles/8656/C-Script-The-Missing-Puzzle-Piece"">Oleg Shilo's C# Script solution (at The Code Project</a>) really is a great introduction to providing script abilities in your application.</p>
+
+<p>A different approach would be to consider a language that is specifically built for scripting, such as <a href=""http://en.wikipedia.org/wiki/IronRuby"">IronRuby</a>, <a href=""http://en.wikipedia.org/wiki/IronPython"">IronPython</a>, or <a href=""http://en.wikipedia.org/wiki/Lua_%28programming_language%29"">Lua</a>.</p>
+
+<p>IronPython and IronRuby are both available today.</p>
+
+<p>For a guide to embedding IronPython read
+<a href=""http://blogs.msdn.com/b/jmstall/archive/2005/09/01/howto-embed-ironpython.aspx"">How to embed IronPython script support in your existing app in 10 easy steps</a>.</p>
+
+<p>Lua is a scripting language commonly used in games. There is a Lua compiler for .NET, available from CodePlex -- <a href=""http://www.codeplex.com/Nua"">http://www.codeplex.com/Nua</a></p>
+
+<p>That codebase is a great read if you want to learn about building a compiler in .NET.</p>
+
+<p>A different angle altogether is to try <a href=""http://en.wikipedia.org/wiki/Windows_PowerShell"">PowerShell</a>. There are numerous examples of embedding PowerShell into an application -- here's a thorough project on the topic: 
+<a href=""http://code.msdn.microsoft.com/PowerShellTunnel/Wiki/View.aspx?title=PowerShellTunnel%20Reference"">Powershell Tunnel</a></p>
+"
+332,59,2008-08-02T03:00:24Z,330,19,"<p>I would be a bit reluctant to use nested classes here.  What if you created an abstract base class for a ""multimedia driver"" to handle the back-end stuff (workhorse), and a separate class for the front-end work?  The front-end class could take a pointer/reference to an implemented driver class (for the appropriate media type and situation) and perform the abstract operations on the workhorse structure.</p>
+
+<p>My philosophy would be to go ahead and make both structures accessible to the client in a polished way, just under the assumption they would be used in tandem.</p>
+
+<p>I would reference something like a <a href=""http://qt-project.org/doc/qt-4.8/qtextdocument.html"">QTextDocument</a> in Qt.  You provide a direct interface to the bare metal data handling, but pass the authority along to an object like a QTextEdit to do the manipulation.</p>
+"
+344,100,2008-08-02T04:18:15Z,260,6,"<p>You might be able to use IronRuby for that. </p>
+
+<p>Otherwise I'd suggest you have a directory where you place precompiled assemblies. Then you could have a reference in the DB to the assembly and class, and use reflection to load the proper assemblies at runtime.</p>
+
+<p>If you really want to compile at run-time you could use the CodeDOM, then you could use reflection to load the dynamic assembly. <a href=""http://msdn.microsoft.com/en-us/library/microsoft.csharp.csharpcodeprovider.aspx"">MSDN article which might help</a>.</p>"
+359,119,2008-08-02T06:16:23Z,260,5,"<P>You could use any of the DLR languages, which provide a way to really easily host your own scripting platform. However, you don't have to use a scripting language for this. You could use C# and compile it with the C# code provider. As long as you load it in its own AppDomain, you can load and unload it to your heart's content.</P>"
+473,49,2008-08-02T15:33:13Z,470,8,"<p>No, what you're doing is fine. Don't let those people confuse you.</p>
+
+<p>If you've written the web services with .net then the reference proxies generated by .net are going to be quite suitable. The situation you describe (where you are both producer and consumer) is the ideal situation.</p>
+
+<p>If you need to connect to a web services that is <em>unknown</em> at compile time, then you would want a more dynamic approach, where you deduce the 'shape' of the web service. </p>
+
+<p>But start by using the auto generated proxy class, and don't worry about it until you hit a limitation. And when you do -- come back to stack overflow ;-)</p>"
+529,86,2008-08-02T18:16:07Z,180,3,"<p>Isn't it also a factor which order you set up the colors?</p>
+
+<p>Like if you use Dillie-Os idea you need to mix the colors as much as possible. 
+0 64 128 256 is from one to the next. but 0 256 64 128 in a wheel would be more ""apart""</p>
+
+<p>Does this make sense?</p>"
+539,157,2008-08-02T19:03:52Z,180,21,"<p>My first thought on this is ""how generate N vectors in a space that maximize distance from each other."" You can see that the RGB (or any other scale you use that forms a basis in color space) are just vectors. Take a look at <a href=""http://mathworld.wolfram.com/topics/RandomPointPicking.html"">Random Point Picking</a>. Hope this is a good start for you! Once you have a set of vectors that are maximized a part, you can save them in a hash table or something for later, and just perform random rotations on them to get all the colors you desire that are maximally apart from each other!</p>
+
+<p><strong>Edit:</strong> Thinking about this problem more, it would be better to map the colors in a linear manor, possibly (0,0,0) --> (255,255,255) lexicographically, and then distribute them evenly. I really don't know how well this will work, but it should since, lets say:</p>
+
+<p>n = 10
+we know we have 16777216 colors (256^3). We can use <a href=""http://stackoverflow.com/questions/561/using-combinations-of-sets-as-test-data#794"">buckles algorithm 515</a> to find the lexicographically indexed color.<img src=""http://i.stack.imgur.com/gEuCs.gif"" alt=""\frac {\binom {256^3} {3}} {n} * i"">. You'll probably have to edit the algorithm to avoid overflow and probably add some minor speed improvements.</p>
+"
+585,149,2008-08-02T23:40:04Z,580,13,"<p>For my projects I alternate between SQL Compare from REd Gate and the Database Publishing Wizard from Microsoft which you can download free
+<a href=""http://www.microsoft.com/downloads/details.aspx?familyid=56E5B1C5-BF17-42E0-A410-371A838E570A&amp;displaylang=en"">here</a>.</p>
+
+<p>The Wizard isn't as slick as SQL Compare or SQL Data Compare but it does the trick. One issue is that the scripts it generates may need some rearranging and/or editing to flow in one shot.</p>
+
+<p>On the up side, it can move your schema and data which isn't bad for a free tool.</p>"
+586,34,2008-08-02T23:51:09Z,580,17,"<p>I've taken to hand-coding all of my DDL (creates/alter/delete) statements, adding them to my .sln as text files, and using normal versioning (using subversion, but any revision control should work). This way, I not only get the benefit of versioning, but updating live from dev/stage is the same process for code and database - tags, branches and so on work all the same.</p>
+
+<p>Otherwise, I agree redgate is expensive if you don't have a company buying it for you. If you can get a company to buy it for you though, it really is worth it!</p>"
+590,116,2008-08-03T00:22:03Z,580,2,"<p>If you have a company buying it, Toad from Quest Software has this kind of management functionality built in.  It's basically a two-click operation to compare two schemas and generate a sync script from one to the other.</p>
+
+<p>They have editions for most of the popular databases, including of course Sql Server.</p>"
+591,111,2008-08-03T00:37:03Z,580,3,"<p>I work the same way Karl does, by keeping all of my SQL scripts for creating and altering tables in a text file that I keep in source control.  In fact, to avoid the problem of having to have a script examine the live database to determine what ALTERs to run, I usually work like this:</p>
+
+<ul>
+<li>On the first version, I place everything during testing into one SQL script, and treat all tables as a CREATE.  This means I end up dropping and readding tables a lot during testing, but that's not a big deal early into the project (since I'm usually hacking the data I'm using at that point anyway).</li>
+<li>On all subsequent versions, I do two things: I make a new text file to hold the upgrade SQL scripts, that contain just the ALTERs for that version.  And I make the changes to the original, create a fresh database script as well.  This way an upgrade just runs the upgrade script, but if we have to recreate the DB we don't need to run 100 scripts to get there.</li>
+<li>Depending on how I'm deploying the DB changes, I'll also usually put a version table in the DB that holds the version of the DB.  Then, rather than make any human decisions about which scripts to run, whatever code I have running the create/upgrade scripts uses the version to determine what to run.</li>
+</ul>
+
+<p>The one thing this will not do is help if part of what you're moving from test to production is data, but if you want to manage structure and not pay for a nice, but expensive DB management package, is really not very difficult.  I've also found it's a pretty good way of keeping mental track of your DB.</p>"
+597,76,2008-08-03T01:38:02Z,580,1,"<p>I agree that scripting everything is the best way to go and is what I advocate at work.  You should script everything from DB and object creation to populating your lookup tables.</p>
+
+<p>Anything you do in UI only won't translate (especially for changes... not so much for first deployments) and will end up requiring a tools like what Redgate offers.</p>"
+655,91,2008-08-03T11:41:38Z,650,69,"<p>With the ""Built in"" stuff, you can't, as using 1.0.* or 1.0.0.* will replace the revision and build numbers with a coded date/timestamp, which is usually also a good way. </p>
+
+<p>For more info, see the <a href=""http://msdn2.microsoft.com/en-us/library/c405shex%28vs.80%29.aspx"">Assembly Linker</a> Documentation in the /v tag.</p>
+
+<p>As for automatically incrementing numbers, use the AssemblyInfo Task:</p>
+
+<p><a href=""http://code.msdn.microsoft.com/AssemblyInfoTaskvers"">AssemblyInfo Task</a></p>
+
+<p>This can be configured to automatically increment the build number.</p>
+
+<p>There are 2 Gotchas:</p>
+
+<ol>
+<li>Each of the 4 numbers in the Version string is limited to 65535. This is a Windows Limitation and unlikely to get fixed.
+<ul>
+<li><a href=""http://blogs.msdn.com/msbuild/archive/2007/01/03/why-are-build-numbers-limited-to-65535.aspx"">Why are build numbers limited to 65535?</a></li>
+</ul></li>
+<li>Using with with Subversion requires a small change:
+<ul>
+<li><a href=""http://www.andrewconnell.com/blog/archive/2006/08/29/4078.aspx"">Using MSBuild to generate assembly version info at build time (including SubVersion fix)</a></li>
+</ul></li>
+</ol>
+
+<p>Retrieving the Version number is then quite easy:</p>
+
+<pre><code>Version v = Assembly.GetExecutingAssembly().GetName().Version;
+string About = string.Format(CultureInfo.InvariantCulture, @""YourApp Version {0}.{1}.{2} (r{3})"", v.Major, v.Minor, v.Build, v.Revision);
+</code></pre>
+
+<hr>
+
+<p>And, to clarify: In .net or at least in C#, the build is actually the THIRD number, not the fourth one as some people (for example Delphi Developers who are used to Major.Minor.Release.Build) might expect.</p>
+
+<p>In .net, it's Major.Minor.Build.Revision.</p>
+"
+787,175,2008-08-03T18:46:33Z,650,4,"<p>What source control system are you using? </p>
+
+<p>Almost all of them have some form of $ Id $ tag that gets expanded when the file is checked in.</p>
+
+<p>I usually use some form of hackery to display this as the version number.</p>
+
+<p>The other alternative is use to use the date as the build number: 080803-1448</p>"
+818,233,2008-08-03T20:45:27Z,810,0,"<p>I'm partway to my solution with this entry on MSDN (don't know how I couldn't find it before).</p>
+
+<p>User/Machine Hive<br>
+Subkeys and values entered under this hive will be installed under the HKEY_CURRENT_USER hive when a user chooses ""Just Me"" or the HKEY_USERS hive or when a user chooses ""Everyone"" during installation.</p>
+
+<p><a href=""http://msdn.microsoft.com/en-us/library/x6kd89c5%28VS.80%29.aspx"" rel=""nofollow"">Registry Editor</a></p>
+"
+820,91,2008-08-03T20:48:47Z,810,3,"<p>First: Yes, this is something that belongs in the Application for the exact reson you specified: What happens after new user profiles are created? Sure, if you're using a domain it's possible to have some stuff put in the registry on creation, but this is not really a use case. The Application should check if there are seetings and use the default settings if not.</p>
+
+<p>That being said, it IS possible to change other users Keys through the HKEY_USERS Hive.</p>
+
+<p>I have no experience with the Visual Studio 2003 Setup Project, so here is a bit of (totally unrelated) VBScript code that might just give you an idea where to look:</p>
+
+<pre><code>const HKEY_USERS = &amp;H80000003<br>strComputer = "".""<br>Set objReg=GetObject(""winmgmts:{impersonationLevel=impersonate}!\\"" &amp; strComputer &amp; ""\root\default:StdRegProv"")<br>strKeyPath = """"<br>objReg.EnumKey HKEY_USERS, strKeyPath, arrSubKeys<br>strKeyPath = ""\Software\Microsoft\Windows\CurrentVersion\WinTrust\Trust Providers\Software Publishing""<br>For Each subkey In arrSubKeys<br>    objReg.SetDWORDValue HKEY_USERS, subkey &amp; strKeyPath, ""State"", 146944<br>Next<br></code></pre>
+
+<p>(Code Courtesy of <a href=""http://jritmeijer.spaces.live.com/blog/cns%218A48A27460FB898A%21965.entry"" rel=""nofollow"">Jeroen Ritmeijer</a>)</p>"
+829,234,2008-08-03T21:17:33Z,810,4,"<p>I'm guessing that because you want to set it for all users, that you're on some kind of shared computer, which is probably running under a domain?</p>
+
+<p><strong>HERE BE DRAGONS</strong></p>
+
+<p>Let's say Joe and Jane regularly log onto the computer, then they will each have 'registries'.</p>
+
+<p>You'll then install your app, and the installer will employ giant hacks and disgusting things to set items under HKCU for them.</p>
+
+<p>THEN, bob will come along and log on (he, and 500 other people have accounts in the domain and so can do this). He's never used this computer before, so he has no registry. The first time he logs in, windows creates him one, but he won't have your setting. </p>
+
+<p>Your app then falls over or behaves incorrectly, and bob complains loudly about those crappy products from raynixon incorporated.</p>
+
+<p>The correct answer is to just have some default settings in your app, which can write them to the registry if it doesn't find them. It's general good practice that your app should never depend on the registry, and should create things as needed, for any registry entry, not just HKCU, anyway</p>"
+870,233,2008-08-03T22:34:06Z,810,0,"<p>Despite what the <a href=""http://msdn.microsoft.com/en-us/library/x6kd89c5%28VS.80%29.aspx"" rel=""nofollow"">MSDN article</a>  says about User/Machine Hive, it doesn't write to HKEY_USERS. Rather it writes to HKCU if you select Just Me and HKLM if you select Everyone.</p>
+
+<p>So my solution is going to be to use the User/Machine Hive, and then in the application it checks if the registry entries are in HKCU and if not, copies them from HKLM. I know this probably isn't the most ideal way of doing it, but it has the least amount of changes.</p>"
+1446,307,2008-08-04T17:38:59Z,580,2,"<p>Using SMO/DMO, it isn't too difficult to generate a script of your schema.  Data is a little more fun, but still doable.</p>
+
+<p>In general, I take ""Script It"" approach, but you might want to consider something along these lines:</p>
+
+<ul>
+<li>Distinguish between Development and Staging, such that you can Develop with a subset of data ... this I would create a tool to simply pull down some production data, or generate fake data where security is concerned.</li>
+<li>For team development, each change to the database will have to be coordinated amongst your team members.  Schema and data changes can be intermingled, but a single script should enable a given feature.  Once all your features are ready, you bundle these up in a single SQL file and run that against a restore of production.</li>
+<li>Once your staging has cleared acceptance, you run the single SQL file again on the production machine.</li>
+</ul>
+
+<p>I have used the Red Gate tools and they are <strong>great</strong> tools, but if you can't afford it, building the tools and working this way isn't too far from the ideal.</p>"
+1464,26,2008-08-04T18:00:50Z,580,5,"<p>Like Rob Allen, I use SQL Compare / Data Compare by Redgate. I also use the Database publishing wizard by Microsoft. I also have a console app I wrote in C# that takes a sql script and runs it on a server. This way you can run large scripts with 'GO' commands in it from a command line or in a batch script.</p>
+
+<p>I use Microsoft.SqlServer.BatchParser.dll and Microsoft.SqlServer.ConnectionInfo.dll libraries in the console application.</p>
+"
+1550,313,2008-08-04T19:51:49Z,650,0,"<p>Some time ago I wrote a quick and dirty exe that would update the version #'s in an assemblyinfo.{cs/vb} - I also have used rxfind.exe (a simple and powerful regex-based search replace tool) to do the update from a command line as part of the build process.  A couple of other helpfule hints:</p>
+
+<ol>
+<li>separate the assemblyinfo into product parts (company name, version, etc.) and assembly specific parts (assembly name etc.).  See <a href=""http://blog.darrenstokes.com/2007/12/17/ease-versioning-multiple-assemblies-by-splitting-up-assemblyinfo/"" rel=""nofollow"">here</a></li>
+<li>Also - i use subversion, so I found it helpful to set the build number to subversion revision number thereby making it really easy to always get back to the codebase that generated the assembly (e.g. 1.4.100.1502 was built from revision 1502).</li>
+</ol>"
+2019,342,2008-08-05T08:29:13Z,330,3,"<p>One way of deciding whether or not to use nested classes is to think whether or not this class plays a supporting role or it's own part.</p>
+
+<p>If it exists solely for the purpose of helping another class then I generally make it a nested class. There are a whole load of caveats to that, some of which seem contradictory but it all comes down to experience and gut-feeling.</p>"
+2023,370,2008-08-05T08:37:19Z,330,2,"<p>sounds like a case where you could use the <a href=""http://en.wikipedia.org/wiki/Strategy_pattern"" rel=""nofollow"">strategy pattern</a></p>"
+3637,541,2008-08-06T16:28:19Z,260,5,"<p>If you don't want to use the DLR you can <a href=""http://docs.codehaus.org/display/BOO/Boo+as+an+embedded+scripting+language"" rel=""nofollow"">use Boo (which has an interpreter)</a> or you could consider <a href=""http://www.codeplex.com/scriptdotnet"" rel=""nofollow"">the Script.NET (S#) project on CodePlex</a>. With the Boo solution you can choose between compiled scripts or using the interpreter, and Boo makes a nice scripting language, has a flexible syntax and an extensible language via its open compiler architecture. Script.NET looks nice too, though, and you could easily extend that language as well as its an open source project and uses a very friendly Compiler Generator (<a href=""http://www.codeplex.com/irony"" rel=""nofollow"">Irony.net</a>).</p>"
+7217,905,2008-08-10T15:24:23Z,260,4,"<p>The main application that my division sells does something very similar to provide client customisations (which means that I can't post any source). We have a C# application that loads dynamic VB.NET scripts (although any .NET language could be easily supported - VB was chosen because the customisation team came from an ASP background).</p>
+
+<p>Using .NET's CodeDom we compile the scripts from the database, using the VB <code>CodeDomProvider</code> (annoyingly it defaults to .NET 2, if you want to support 3.5 features you need to pass a dictionary with ""CompilerVersion"" = ""v3.5"" to its constructor). Use the <code>CodeDomProvider.CompileAssemblyFromSource</code> method to compile it (you can pass settings to force it to compile in memory only.</p>
+
+<p>This would result in hundreds of assemblies in memory, but you could put all the dynamic classes' code together into a single assembly, and recompile the whole lot when any change. This has the advantage that you could add a flag to compile on disk with a <a href=""http://en.wikipedia.org/wiki/Program_database"" rel=""nofollow"">PDB</a> for when you're testing, allowing you to debug through the dynamic code.</p>
+"
+9963,1219,2008-08-13T15:41:44Z,580,1,"<p>I agree with keeping everything in source control and manually scripting all changes.  Changes to the schema for a single release go into a script file created specifically for that release.  All stored procs, views, etc should go into individual files and treated just like .cs or .aspx as far as source control goes.  I use a powershell script to generate one big .sql file for updating the programmability stuff.</p>
+
+<p>I don't like automating the application of schema changes, like new tables, new columns, etc.  When doing a production release, I like to go through the change script command by command to make sure each one works as expected.  There's nothing worse than running a big change script on production and getting errors because you forgot some little detail that didn't present itself in development.</p>
+
+<p>I have also learned that indexes need to be treated just like code files and put into source control.</p>
+
+<p>And you should definitely have more than 2 databases - dev and live.  You should have a dev database that everybody uses for daily dev tasks.  Then a staging database that mimics production and is used to do your integration testing.  Then maybe a complete recent copy of production (restored from a full backup), if that is feasible, so your last round of installation testing goes against something that is as close to the real thing as possible.</p>
+"
+10008,1109,2008-08-13T16:09:09Z,80,6,"<p>The <a href=""http://en.wikipedia.org/wiki/SQLite"" rel=""nofollow"">SQLite</a> API has a function called something like <code>sqlite_prepare</code> which takes <em>one</em> statement and prepares it for execution, essentially parsing the SQL and storing it in memory. This means that the SQL only has to be sent once to the database engine even though the statement is executed many times.</p>
+
+<p>Anyway, a statement is a single SQL query, that's just the rule. The AIR SQL API doesn't allow sending raw SQL to SQLite, only single statements, and the reason is, likely, that AIR uses the <code>sqlite_prepare</code> function when it talks to SQLite.</p>
+"
+14447,1073,2008-08-18T10:47:50Z,580,6,"<p>Don't forget Microsoft's solution to the problem: <a href=""http://msdn.microsoft.com/en-gb/vsts2008/products/bb933747.aspx"" rel=""nofollow"">Visual Studio 2008 Database Edition</a>.  Includes tools for deploying changes to databases, producing a diff between databases for schema and/or data changes, unit tests, test data generation.</p>
+
+<p>It's pretty expensive but I used the trial edition for a while and thought it was brilliant.  It makes the database as easy to work with as any other piece of code.</p>
+"
+28410,1070,2008-08-26T15:38:22Z,580,0,"<p>I do all my database creation as DDL and then wrap that DDL into a schema maintainence class. I may do various things to create the DDL in the first place but fundamentally I do all the schema maint in code. This also means that if one needs to do non DDL things that don't map well to SQL you can write procedural logic and run it between lumps of DDL/DML.</p>
+
+<p>My dbs then have a table which defines the current version so one can code a relatively straightforward set of tests:</p>
+
+<ol>
+<li>Does the DB exist? If not create it.</li>
+<li>Is the DB the current version? If not then run the methods, in sequence, that bring the schema up to date (you may want to prompt the user to confirm and - ideally - do backups at this point).</li>
+</ol>
+
+<p>For a single user app I just run this in place, for a web app we currently to lock the user out if the versions don't match and have a stand alone schema maint app we run. For multi-user it will depend on the particular environment.</p>
+
+<p>The advantage? Well I have a very high level of confidence that the schema for the apps that use this methodology is consistent across all instances of those applications. Its not perfect, there are issues, but it works...</p>
+
+<p>There are some issues when developing in a team environment but that's more or less a given anyway!</p>
+
+<p>Murph</p>
+"
+28698,1220,2008-08-26T17:39:20Z,580,1,"<p>I'm using Subsonic's migrations mechanism so I just have a dll with classes in squential order that have 2 methods, up and down. There is a continuous integration/build script hook into nant, so that I can automate the upgrading of my database.</p>
+
+<p>Its not the best thign in the world, but it beats writing DDL.</p>
+"
+31405,3241,2008-08-28T00:22:08Z,580,1,"<p><a href=""http://www.red-gate.com/products/SQL_Compare/index.htm"" rel=""nofollow"">RedGate SqlCompare</a> is a way to go in my opinion. We do DB deployment on a regular basis and since I started using that tool I have never looked back. 
+Very intuitive interface and saves a lot of time in the end.</p>
+
+<p>The Pro version will take care of scripting for the source control integration as well.</p>
+"
+59760,5845,2008-09-12T19:00:13Z,180,17,"<p>It would be best to find colors maximally distant in a ""perceptually uniform"" colorspace, e.g. CIELAB (using Euclidean distance between L*, a*, b* coordinates as your distance metric) and then converting to the colorspace of your choice.  Perceptual uniformity is achieved by tweaking the colorspace to approximate the non-linearities in the human visual system.</p>
+"
+70727,11521,2008-09-16T09:31:01Z,330,2,"<p>Sometimes it's appropriate to hide the implementation classes from the user -- in these cases it's better to put them in an foo_internal.h than inside the public class definition. That way, readers of your foo.h will not see what you'd prefer they not be troubled with, but you can still write tests against each of the concrete implementations of your interface.</p>
+"
+79013,12713,2008-09-17T01:41:29Z,260,5,"<p>I'd suggest using <a href=""http://luaforge.net/projects/luainterface/"">LuaInterface</a> as it has fully implemented Lua where it appears that Nua is not complete and likely does not implement some very useful functionality (coroutines, etc).</p>
+
+<p>If you want to use some of the outside prepacked Lua modules, I'd suggest using something along the lines of 1.5.x as opposed to the 2.x series that builds fully managed code and cannot expose the necessary C API.</p>
+"
+82288,12416,2008-09-17T11:50:28Z,330,8,"<p>You would use a nested class to create a (small) helper class that's required to implement the main class. Or for example, to define an interface (a class with abstract methods).</p>
+
+<p>In this case, the main disadvantage of nested classes is that this makes it harder to re-use them. Perhaps you'd like to use your VideoDecoder class in another project. If you make it a nested class of VideoPlayer, you can't do this in an elegant way.</p>
+
+<p>Instead, put the other classes in separate .h/.cpp files, which you can then use in your VideoPlayer class. The client of VideoPlayer now only needs to include the file that declares VideoPlayer, and still doesn't need to know about how you implemented it.</p>
+"
+93509,16434,2008-09-18T15:19:37Z,330,0,"<p>You should use an inner class only when you cannot implement it as a separate class using the would-be outer class' public interface.  Inner classes increase the size, complexity, and responsibility of a class so they should be used sparingly.</p>
+
+<p>Your encoder/decoder class sounds like it better fits the <a href=""http://en.wikipedia.org/wiki/Strategy_pattern"" rel=""nofollow"">Strategy Pattern</a></p>
+"
+93908,16632,2008-09-18T16:01:24Z,180,7,"<p>Some related resources:</p>
+
+<p><a href=""http://colorbrewer.org"">ColorBrewer</a> - Sets of colours designed to be maximally distinguishable for use on maps.</p>
+
+<p><a href=""http://epub.wu-wien.ac.at/dyn/openURL?id=oai:epub.wu-wien.ac.at:epub-wu-01_c87"">Escaping RGBland: Selecting Colors for Statistical Graphics</a> - A technical report describing a set of algorithms for generating good (i.e. maximally distinguishable) colour sets in the hcl colour space.</p>
+"
+107530,NA,2008-09-20T07:37:30Z,330,0,"<p>One reason to avoid nested classes is if you ever intend to wrap the code with swig (<a href=""http://www.swig.org"" rel=""nofollow"">http://www.swig.org</a>) for use with other languages. Swig currently has problems with nested classes, so interfacing with libraries that expose any nested classes becomes a real pain.</p>
+"
+109887,9706,2008-09-21T00:39:00Z,330,2,"<p>We hit an issue with a semi-old Sun C++ compiler and visibility of nested classes which behavior changed in the standard.  This is not a reason to not do your nested class, of course, just something to be aware of if you plan on compiling your software on lots of platforms including old compilers.</p>
+"
+123101,21242,2008-09-23T19:07:55Z,330,0,"<p>Another thing to keep in mind is whether you ever envision different implementations of your work functions (such as decoding and encoding). In that case, you would definitely want an abstract base class with different concrete classes which implement the functions. It would not really be appropriate to nest a separate subclass for each type of implementation.</p>
+"
+124363,12734,2008-09-23T22:41:11Z,120,9,"<p>The Jeff Prosise version from MSDN magazine works pretty well, but it has a few flaws:</p>
+
+<p><code>AddNode</code> freaks out with links to external sites on your menu (www.google.com, etc.)</p>
+
+<p>Here's my fix in <code>BuildSiteMap()</code>:</p>
+
+<pre><code>SiteMapNode node = GetSiteMapNodeFromReader(reader);
+string url = node.Url;
+if (url.Contains("":""))
+{
+    string garbage = Guid.NewGuid().ToString();  // SiteMapNode needs unique URLs
+    node.Url = ""~/dummy_"" + garbage + "".aspx"";
+    AddNode(node, _root);
+    node.Url = url;
+}
+else
+{
+    AddNode(node, _root);
+}
+</code></pre>
+
+<p><code>SQLDependency</code> caching is cool, but if you don't want to make a trip to the DB everytime your menu loads (to check to see if the dependency has changed) and your menus don't change very often, then why not use <code>HttpRuntime.Cache</code> instead?</p>
+
+<pre><code>public override SiteMapNode RootNode
+{
+    get
+    {
+        SiteMapNode temp = (SiteMapNode)HttpRuntime.Cache[""SomeKeyName""];
+        if (temp == null)
+        {
+            temp = BuildSiteMap();
+            HttpRuntime.Cache.Insert(""SomeKeyName"", temp, null, DateTime.Now.AddHours(1), Cache.NoSlidingExpiration);
+        }
+        return temp;
+    }
+}
+</code></pre>
+"
+136881,13760,2008-09-25T23:34:32Z,330,3,"<p>Well, if you use pointers to your workhorse classes in your Interface class and don't expose them as parameters or return types in your interface methods, you will not need to include the definitions for those work horses in your interface header file (you just forward declare them instead). That way, users of your interface will not need to know about the classes in the background. </p>
+
+<p>You definitely don't need to nest classes for this. In fact, separate class files will actually make your code a lot more readable and easier to manage as your project grows. it will also help you later on if you need to subclass (say for different content/codec types).</p>
+
+<p>Here's more information on the <a href=""http://www.apibook.com/Chapter_3.pdf"" rel=""nofollow"">PIMPL pattern</a> (section 3.1.1).</p>
+"
+143966,16582,2008-09-27T16:39:09Z,180,4,"<p>Here is some code to allocate RGB colors evenly around a HSL color wheel of specified luminosity.</p>
+
+<pre><code>class cColorPicker
+{
+public:
+    void Pick( vector&lt;DWORD&gt;&amp;v_picked_cols, int count, int bright = 50 );
+private:
+    DWORD HSL2RGB( int h, int s, int v );
+    unsigned char ToRGB1(float rm1, float rm2, float rh);
+};
+/**
+
+  Evenly allocate RGB colors around HSL color wheel
+
+  @param[out] v_picked_cols  a vector of colors in RGB format
+  @param[in]  count   number of colors required
+  @param[in]  bright  0 is all black, 100 is all white, defaults to 50
+
+  based on Fig 3 of http://epub.wu-wien.ac.at/dyn/virlib/wp/eng/mediate/epub-wu-01_c87.pdf?ID=epub-wu-01_c87
+
+*/
+
+void cColorPicker::Pick( vector&lt;DWORD&gt;&amp;v_picked_cols, int count, int bright )
+{
+    v_picked_cols.clear();
+    for( int k_hue = 0; k_hue &lt; 360; k_hue += 360/count )
+        v_picked_cols.push_back( HSL2RGB( k_hue, 100, bright ) );
+}
+/**
+
+  Convert HSL to RGB
+
+  based on http://www.codeguru.com/code/legacy/gdi/colorapp_src.zip
+
+*/
+
+DWORD cColorPicker::HSL2RGB( int h, int s, int l )
+{
+    DWORD ret = 0;
+    unsigned char r,g,b;
+
+    float saturation = s / 100.0f;
+    float luminance = l / 100.f;
+    float hue = (float)h;
+
+    if (saturation == 0.0) 
+    {
+      r = g = b = unsigned char(luminance * 255.0);
+    }
+    else
+    {
+      float rm1, rm2;
+
+      if (luminance &lt;= 0.5f) rm2 = luminance + luminance * saturation;  
+      else                     rm2 = luminance + saturation - luminance * saturation;
+      rm1 = 2.0f * luminance - rm2;   
+      r   = ToRGB1(rm1, rm2, hue + 120.0f);   
+      g = ToRGB1(rm1, rm2, hue);
+      b  = ToRGB1(rm1, rm2, hue - 120.0f);
+    }
+
+    ret = ((DWORD)(((BYTE)(r)|((WORD)((BYTE)(g))&lt;&lt;8))|(((DWORD)(BYTE)(b))&lt;&lt;16)));
+
+    return ret;
+}
+
+
+unsigned char cColorPicker::ToRGB1(float rm1, float rm2, float rh)
+{
+  if      (rh &gt; 360.0f) rh -= 360.0f;
+  else if (rh &lt;   0.0f) rh += 360.0f;
+
+  if      (rh &lt;  60.0f) rm1 = rm1 + (rm2 - rm1) * rh / 60.0f;   
+  else if (rh &lt; 180.0f) rm1 = rm2;
+  else if (rh &lt; 240.0f) rm1 = rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;      
+
+  return static_cast&lt;unsigned char&gt;(rm1 * 255);
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    vector&lt;DWORD&gt; myCols;
+    cColorPicker colpick;
+    colpick.Pick( myCols, 20 );
+    for( int k = 0; k &lt; (int)myCols.size(); k++ )
+        printf(""%d: %d %d %d\n"", k+1,
+        ( myCols[k] &amp; 0xFF0000 ) &gt;&gt;16,
+        ( myCols[k] &amp; 0xFF00 ) &gt;&gt;8,
+        ( myCols[k] &amp; 0xFF ) );
+
+    return 0;
+}
+</code></pre>
+"
+155067,8900,2008-09-30T20:58:08Z,650,15,"<p>VS.NET defaults the Assembly version to 1.0.* and uses the following logic when auto-incrementing: it sets the build part to the number of days since January 1st, 2000, and sets the revision part to the number of seconds since midnight, local time, divided by two. See this <a href=""http://msdn.microsoft.com/en-us/library/system.reflection.assemblyversionattribute.assemblyversionattribute.aspx"">MSDN article</a>.</p>
+
+<p>Assembly version is located in an assemblyinfo.vb or assemblyinfo.cs file. From the file: </p>
+
+<pre class=""lang-vb prettyprint-override""><code>' Version information for an assembly consists of the following four values:
+'
+'      Major Version
+'      Minor Version 
+'      Build Number
+'      Revision
+'
+' You can specify all the values or you can default the Build and Revision Numbers 
+' by using the '*' as shown below:
+' &lt;Assembly: AssemblyVersion(""1.0.*"")&gt; 
+
+&lt;Assembly: AssemblyVersion(""1.0.0.0"")&gt; 
+&lt;Assembly: AssemblyFileVersion(""1.0.0.0"")&gt; 
+</code></pre>
+"
+202317,20709,2008-10-14T18:41:45Z,90,2,"<p>You can also try <em><a href=""http://www.codeproject.com/KB/work/XTortoiseSVN.aspx"" rel=""nofollow"">Version Control for the Standalone Programmer - Part 1</a></em> or perhaps <em><a href=""http://www.kenegozi.com/Blog/2007/07/30/merging-with-tortoisesvn.aspx"" rel=""nofollow"">Merging with TortoiseSVN</a></em>.</p>
+"
+322859,35719,2008-11-27T03:15:45Z,580,0,"<p>I'm currently working the same thing to you. Not only deploying SQL Server databases from test to live but also include the whole process from Local -> Integration -> Test -> Production. So what can make me easily everyday is I do <a href=""http://tech.wowkhmer.com/post/2008/11/11/NAnt-task-with-Red-Gate-SQL-Compare.aspx"" rel=""nofollow"">NAnt task with Red-Gate SQL Compare</a>. I'm not working for RedGate but I have to say it is good choice.</p>
+"
+1466832,16012,2009-09-23T15:40:46Z,90,19,"<p>My easy click-by-click instructions (<strong>specific to TortoiseSVN</strong>) are in Stack&nbsp;Overflow question <em><a href=""http://stackoverflow.com/questions/1461922"">What is the simplest way to do branching and merging using TortoiseSVN?</a></em>.</p>
+"
+1499720,115432,2009-09-30T18:00:26Z,180,0,"<p>Last I checked <a href=""http://www.jfree.org/jfreechart/"" rel=""nofollow"">JFreeChart</a> has this precise algorithm and as it is open source you can check out what it does.  I do know that the colors I get do not seem to be randomly spaced along some circle or sphere, but rather chosen more specifically.</p>
+"
+2352703,283258,2010-02-28T21:16:35Z,650,0,"<p>If you want an auto incrementing number that updates each time a compilation is done, you can use <a href=""http://testdox.wordpress.com/versionupdater/"" rel=""nofollow"">VersionUpdater</a> from a pre-build event. Your pre-build event can check the build configuration if you prefer so that the version number will only increment for a Release build (for example).</p>
+"
+3001482,346593,2010-06-08T21:33:36Z,580,1,"<p>I also maintain scripts for all my objects and data. For deploying I wrote this free utility - <a href=""http://www.sqldart.com"" rel=""nofollow"">http://www.sqldart.com</a>. It'll let you reorder your script files and will run the whole lot within a transaction.</p>
+"
+3770976,364174,2010-09-22T15:37:30Z,80,1,"<p>What about making your delimiter something a little more complex like "";\n"" which would not show up all that often. You just have to ensure when creating the file you have a line return or two in there. I end up putting two ""\n\n"" into the creation of my files which works well.</p>
+"
+4289753,192536,2010-11-27T02:12:59Z,260,2,"<p>The next version of .NET (5.0?) has had a lot of talk about opening the ""compiler as a service"" which would make things like direct script evaluation possible.</p>
+"
+7815745,678455,2011-10-19T01:58:23Z,180,1,"<p>I know this an old post but I found it while looking for a PHP solution to the topic and finally came with a simple solution:</p>
+
+<pre><code>function random_color($i = null, $n = 10, $sat = .5, $br = .7) {
+    $i = is_null($i) ? mt_rand(0,$n) : $i;
+    $rgb = hsv2rgb(array($i*(360/$n), $sat, $br));
+    for ($i=0 ; $i&lt;=2 ; $i++) 
+        $rgb[$i] = dechex(ceil($rgb[$i]));
+    return implode('', $rgb);
+}
+
+function hsv2rgb($c) { 
+    list($h,$s,$v)=$c; 
+    if ($s==0) 
+        return array($v,$v,$v); 
+    else { 
+        $h=($h%=360)/60; 
+        $i=floor($h); 
+        $f=$h-$i; 
+        $q[0]=$q[1]=$v*(1-$s); 
+        $q[2]=$v*(1-$s*(1-$f)); 
+        $q[3]=$q[4]=$v; 
+        $q[5]=$v*(1-$s*$f); 
+        return(array($q[($i+4)%6]*255,$q[($i+2)%6]*255,$q[$i%6]*255)); //[1] 
+    } 
+}
+</code></pre>
+
+<p>So just call the random_color() function where $i identifies the color, $n the number of possible colors, $sat the saturation and $br the brightness.</p>
+"
+11527418,915865,2012-07-17T17:08:51Z,260,4,"<p>I'm using LuaInterface1.3 + Lua 5.0 for NET1.1 application.</p>
+
+<p>The issue with Boo is that everytime you parse/compile/eval your code on the fly, it creates a set of boo classes so you will get memory leaks.</p>
+
+<p>Lua in the other hand, does not do that, so it's very very stable and works wonderful (I can pass objects from C# to Lua and backwards).</p>
+
+<p>So far I havent put it in PROD yet, but seems very promising.</p>
+
+<p>UPDATE: <strong>I did have memory leaks issues in PROD using LuaInterface + Lua 5.0</strong>, therefore I used Lua 5.2 and linked directly into C# with DllImport. <strong>The memory leaks were inside the LuaInterface library.</strong></p>
+
+<p>Lua 5.2: from <a href=""http://luabinaries.sourceforge.net"" rel=""nofollow"">http://luabinaries.sourceforge.net</a> and <a href=""http://sourceforge.net/projects/luabinaries/files/5.2/Windows%20Libraries/Dynamic/lua-5.2_Win32_dll7_lib.zip/download"" rel=""nofollow"">http://sourceforge.net/projects/luabinaries/files/5.2/Windows%20Libraries/Dynamic/lua-5.2_Win32_dll7_lib.zip/download</a></p>
+
+<p>Once I did this, all my memory leaks were gone and the app was very stable.</p>
+"
+15211000,351154,2013-03-04T20:58:20Z,650,6,"<p>I have found that it works well to simply display the date of the last build using the following wherever a product version is needed:</p>
+
+<pre><code>System.IO.File.GetLastWriteTime(System.Reflection.Assembly.GetExecutingAssembly().Location).ToString(""yyyy.MM.dd.HHMM"")
+</code></pre>
+
+<p>Rather than attempting to get the version from something like the following:</p>
+
+<pre><code>System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+object[] attributes = assembly.GetCustomAttributes(typeof(System.Reflection.AssemblyFileVersionAttribute), false);
+object attribute = null;
+
+if (attributes.Length &gt; 0)
+{
+    attribute = attributes[0] as System.Reflection.AssemblyFileVersionAttribute;
+}
+</code></pre>
+"
+21634390,135862,2014-02-07T17:43:13Z,180,0,"<p>To achieve ""most distinguishable"" we need to use a perceptual color space like Lab (or any other perceptually linear color space) and not RGB. Also, we can quantize this space to reduce the size of the space.</p>
+
+<p>Generate the full 3D space with all possible quantized entries and run the K-means algorithm with <code>k=N</code>. The resulting centers/ ""means"" should be approximately most distinguishabl from each other. </p>
+"
