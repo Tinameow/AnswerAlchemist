@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-from backend import util as helper
+from flask import Flask, jsonify, request
+import util as helper
 
 # Initializing flask app
 app = Flask(__name__)
@@ -7,7 +7,16 @@ app = Flask(__name__)
 # Route for seeing a data
 @app.route('/filter')
 def get_filter():
-    items = helper.filter_ranked_answers()
+    data = request.get_json()
+    tag = data['tag']
+    items = helper.filter_ranked_answers(tag)
+    return jsonify(items)
+
+@app.route('/search')
+def search():
+    data = request.get_json()
+    input = data['input']
+    items = helper.get_ranked_answers(input)
     return jsonify(items)
   
 # Running app

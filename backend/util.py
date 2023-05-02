@@ -11,10 +11,9 @@ tags = first.tags # tags of top answer
 # if ranked list, filter the ranked list, otherwise, filter the original list
 def filter_ranked_answers(tag: str):
     filtered_list = []
+    row_list = []
     if rankingList:
-        row_list = rankingList
-    else:
-        row_list = rawList
+        row_list = rankingList(tag)
     for row in row_list:
         tag_list = row.tags
         if tag in tag_list:
@@ -25,4 +24,14 @@ def filter_ranked_answers(tag: str):
                 "tags": tag_list
                 }
             filtered_list.append(item)
-    return filtered_list
+    if len(filtered_list) >= 5:
+        return filtered_list[:5]
+    else: 
+        return filtered_list[:len(filtered_list)]
+
+def get_ranked_answers(input: str):
+    ret = rankingList(input)
+    if len(ret) >= 5:
+        return ret[:5]
+    else: 
+        return ret[:len(ret)]
