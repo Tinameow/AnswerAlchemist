@@ -58,7 +58,9 @@ function QnAItem(props) {
   return (
     <StyledCard>
       <StyledCardContent>
-        <AnswerText>{answer}</AnswerText>
+        <AnswerText>
+          <div dangerouslySetInnerHTML={{ __html: answer }} />     
+        </AnswerText>
       </StyledCardContent>
 
       <QuestionTitle>{question}</QuestionTitle>

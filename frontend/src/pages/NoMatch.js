@@ -5,7 +5,7 @@ function NoMatch() {
     <div>
       <h2>Nothing to see here!</h2>
       <p>
-        <Link to="/search">Go to the home page</Link>
+        <Link to="/search">Go to the search page</Link>
       </p>
     </div>
   );

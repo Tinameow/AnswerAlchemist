@@ -42,33 +42,32 @@ def search():
     limit = int(request.args.get('limit', 100))
     offset = int(request.args.get('offset', 0))
 
-    # result = util.get_ranked_answers(keywords)
-    # tags = []
-
     # Perform search based on keywords, limit, and offset
     # Return mock_results for now
-    mock_results = [
-        {
-            "id": 1,
-            "question": {"title" : "Question title",
-                        "description" : "Question description"
-                      },
-            "answer": "A answer to the question",
-            "tags": ["Python", "Tuple"],
-            "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        },
-        {
-            "id": 2,
-            "question": {"title" : "Question title",
-                        "description" : "Question description"
-                      },
-            "answer": "A answer to the question",
-            "tags": ["Python", "List"],
-            "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-    ]
-    mock_tags = ["Python", "Tuple", "List"]
-    return jsonify({"data": {"results": mock_results, "tags": mock_tags}})
+    # mock_results = [
+    #     {
+    #         "id": 1,
+    #         "question": {"title" : "Question title",
+    #                     "description" : "Question description"
+    #                   },
+    #         "answer": "A answer to the question",
+    #         "tags": ["Python", "Tuple"],
+    #         "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #     },
+    #     {
+    #         "id": 2,
+    #         "question": {"title" : "Question title",
+    #                     "description" : "Question description"
+    #                   },
+    #         "answer": "A answer to the question",
+    #         "tags": ["Python", "List"],
+    #         "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #     }
+    # ]
+    # mock_tags = ["Python", "Tuple", "List"]
+
+    results, tags = util.get_ranked_answers(keywords)
+    return jsonify({"data": {"results": results, "tags": tags}})
 
   
 # Running app

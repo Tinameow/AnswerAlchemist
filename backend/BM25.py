@@ -1,15 +1,26 @@
 import numpy as np
 from collections import Counter
 from nltk.tokenize import word_tokenize
-
+import nltk
 from build_model import readQuestions
 from build_model import readAnswers
 from build_model import readTags
 
+import nltk
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+nltk.download()
+
 def tokenize(original_list):
 
     res_list = []
-
     for i in range(len(original_list)):
         sentence = original_list[i]
         words = word_tokenize(sentence)
@@ -61,7 +72,6 @@ class bm25Model:
         for word in query:
             if word not in self.f[index]:
                 continue
-            print("suanle!")
             numerator1 = self.idf[word] * (self.f[index][word] * (self.k1+1))
             denominator1 = self.f[index][word] + self.k1 * (1 - self.b + self.b * num_of_word_in_doc / self.avg_doc_len)
             numerator2 = qf[word] * (self.k2+1)
@@ -76,13 +86,48 @@ class bm25Model:
 
         return score_list
 
+def query(query):
+    # TODO
+    query = query.strip().split()
 
+    filepath_Q = 'data/Questions.csv'
+    filepath_A = 'data/Answers.csv'
+    filepath_T = 'data/Tags.csv'
+
+    my_dict = {}
+
+    readQuestions(filepath_Q, my_dict)
+    readAnswers(filepath_A, my_dict)
+    readTags(filepath_T, my_dict)
+
+    key_list = []
+    title_list = []
+    for key in list(my_dict.keys()):
+        title = my_dict[key].title
+        title_list.append(title)
+        key_list.append(key)
+
+    title_list_after_tok = tokenize(title_list)
+
+    my_model = bm25Model()
+    my_model.input_document(title_list_after_tok[0:10])
+    # print(my_model.idf)
+    score_list = my_model.get_score_list(query)
+
+    # print(score_list[0:10])
+
+    combined_list = list(zip(key_list, score_list))
+    sorted_combined_list = sorted(combined_list, key=lambda x: x[1])
+    sorted_key_list = [x[0] for x in sorted_combined_list]
+    # print(sorted_key_list[0:10])
+
+    return sorted_key_list, my_dict
 
 if __name__ == '__main__':
 
-    filepath_Q = 'archive/Questions.csv'
-    filepath_A = 'archive/Answers.csv'
-    filepath_T = 'archive/Tags.csv'
+    filepath_Q = 'data/Questions.csv'
+    filepath_A = 'data/Answers.csv'
+    filepath_T = 'data/Tags.csv'
 
     my_dict = {}
     # my_list = []

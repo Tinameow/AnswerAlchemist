@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import {Box, Stack, Chip} from '@mui/material';
+import {Box, Stack, Chip, Button} from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import QnAItem from '../components/QnAItem';
 import {GetQnAList} from '../api/API';
@@ -8,12 +8,14 @@ import {GetQnAList} from '../api/API';
 
 
 function Search(props) {
+    const [searchInput, setSearchInput] = useState("");
     const [results, setResults] = useState([]);
     const [tags, setTags] = useState([]);
     const [chosenTags, setChosenTags] = useState([]);
   
     const handleInputChange = (e) => {
       e.preventDefault();
+      setSearchInput(e.target.value);
   
       GetQnAList(e.target.value)
           .then((data) => {
@@ -43,8 +45,11 @@ function Search(props) {
         <Stack spacing={2} sx={{ mt: 5 }} alignItems="center">
           <Box sx={{ width: { xs: 400, sm: 600, md: 700, lg: 700 } }}>
             <SearchBar onChange={handleInputChange} />
+            <Button>
+                
+            </Button>
           </Box>
-          <Box>
+          <Box sx={{ml: 3}}>
             {tags.map((tag) => (
               <Chip
                 key={tag}
