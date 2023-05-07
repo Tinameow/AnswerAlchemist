@@ -28,9 +28,9 @@ def get_question(question_id):
             "tags": ["Python", "Tuple"],
             "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         },
-        "answers": [ {"answer":"A answer to the question", 
+        "answers": [ {"id": 1, "answer":"A answer to the question", 
                       "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, 
-                      {"answer":"Another answer to the question", 
+                      {"id": 2, "answer":"Another answer to the question", 
                       "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}],
     }
     return jsonify({"data": mock_question})
