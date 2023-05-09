@@ -28,6 +28,19 @@ def get_dict_details(ques_id):
         tagList.append(entry[5])
     # print(details)
     return details[0], list(set(tagList))
+
+def get_question(ques_id):
+    cur=conn.cursor()
+    query = 'select Questions.Id, Questions.Title, Questions.Body as QBody, Answers.Body as ABody, Answers.Score, Tags.Tag from Answers join Questions on Answers.ParentId = Questions.Id join Tags on Tags.Id = Questions.Id where Questions.Id = {} order by Answers.Score desc;'.format(ques_id)
+    cur.execute(query)
+    details = cur.fetchall()
+    tagList = []
+    ansList = []
+    for entry in details:
+        tagList.append(entry[5])
+        ansList.append(entry[3])
+    # print(details)
+    return details[0], list(set(tagList)), list(set(ansList))
 '''
 first = rankingList[0]
 answer = first.body  # top answer of the input query
