@@ -76,4 +76,4 @@ def get_ranked_answers(query_input: str):
 #         return filtered_list[:len(filtered_list)]
 
 
-get_details()
+# get_details()

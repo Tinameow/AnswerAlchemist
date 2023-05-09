@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import util 
 from datetime import datetime
+from BM25 import bm25Model
 
 # Initializing flask app
 app = Flask(__name__)
