@@ -47,12 +47,16 @@ def get_t_details():
     # print(details)
     return details
 
-def get_dict_details():
+def get_dict_details(ques_id):
     cur=conn.cursor()
-    cur.execute("select Questions.Id, Questions.Title, Questions.Body as QBody, Answers.Body as ABody, Tags.Tag from Answers join Questions on Answers.ParentId = Questions.Id join Tags on Tags.Id = Questions.Id where Questions.Id = 80")
+    query = 'select Questions.Id, Questions.Title, Questions.Body as QBody, Answers.Body as ABody, Answers.Score, Tags.Tag from Answers join Questions on Answers.ParentId = Questions.Id join Tags on Tags.Id = Questions.Id where Questions.Id = {} order by Answers.Score desc;'.format(ques_id)
+    cur.execute(query)
     details = cur.fetchall()
+    tagList = []
+    for entry in details:
+        tagList.append(entry[:6])
     # print(details)
-    return details
+    return details[0], tagList 
 '''
 first = rankingList[0]
 answer = first.body  # top answer of the input query
@@ -64,19 +68,19 @@ def get_ranked_answers(query_input: str):
     results = []
     tags = set()
     for i in sorted_key_list:
-        question = question_dict[i]
+        details, tags = get_dict_details(i)
         results.append(
             {
             "id": i,
-            "question": {"title" : question.title,
-                        "description" : question.body
+            "question": {"title" : details[1],
+                        "description" : details[2]
                       },
-            "answer": question.answer,
-            "tags": question.tags,
-            "created": question.creationDate
+            "answer": details[3],
+            "tags": tags,
+            "created": details[4]
             }
         )
-        for tag in question.tags:
+        for tag in tags:
             tags.add(tag)
     return results, sorted(list(tags))
 
@@ -101,5 +105,3 @@ def get_ranked_answers(query_input: str):
 #     else: 
 #         return filtered_list[:len(filtered_list)]
 
-
-get_details()
