@@ -3,6 +3,7 @@ from flask_cors import CORS
 import util 
 from datetime import datetime
 from BM25 import bm25Model
+from chatGPT import get_summaried_answers
 
 # Initializing flask app
 app = Flask(__name__)
@@ -39,7 +40,7 @@ def get_question(question_id):
 
 @app.route('/search', methods=['GET'])
 def search():
-    keywords = request.args.get('keywords', None)
+    query = request.args.get('keywords', None)
     limit = int(request.args.get('limit', 100))
     offset = int(request.args.get('offset', 0))
 
@@ -67,8 +68,9 @@ def search():
     # ]
     # mock_tags = ["Python", "Tuple", "List"]
 
-    results, tags = util.get_ranked_answers(keywords)
-    return jsonify({"data": {"results": results, "tags": tags}})
+    results, tags = util.get_ranked_answers(query)
+    summary = get_summaried_answers(query, results)
+    return jsonify({"data": {"summary": summary, "results": results, "tags": tags}})
 
   
 # Running app
