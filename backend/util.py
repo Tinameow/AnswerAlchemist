@@ -26,7 +26,33 @@ def get_details():
     print(details)
     # return details
 '''
+def get_q_details():
+    cur=conn.cursor()
+    cur.execute("select Id, CreationDate, Title, Body from Questions")
+    details = cur.fetchall()
+    # print(details)
+    return details
 
+def get_a_details():
+    cur=conn.cursor()
+    cur.execute("select ParentId, Score, Body from Answers")
+    details = cur.fetchall()
+    # print(details)
+    return details
+
+def get_t_details():
+    cur=conn.cursor()
+    cur.execute("select Id, Tag from Tags")
+    details = cur.fetchall()
+    # print(details)
+    return details
+
+def get_dict_details():
+    cur=conn.cursor()
+    cur.execute("select Questions.Id, Questions.Title, Questions.Body as QBody, Answers.Body as ABody, Tags.Tag from Answers join Questions on Answers.ParentId = Questions.Id join Tags on Tags.Id = Questions.Id where Questions.Id = 80")
+    details = cur.fetchall()
+    # print(details)
+    return details
 '''
 first = rankingList[0]
 answer = first.body  # top answer of the input query
@@ -76,4 +102,4 @@ def get_ranked_answers(query_input: str):
 #         return filtered_list[:len(filtered_list)]
 
 
-# get_details()
+get_details()
