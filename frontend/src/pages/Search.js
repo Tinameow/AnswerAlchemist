@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import {Box, Stack, Chip, Button, Paper} from '@mui/material';
+import {Box, Stack, Chip, Button, Paper, Typography} from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import QnAItem from '../components/QnAItem';
 import {GetQnAList} from '../api/API';
@@ -90,9 +90,14 @@ function Search(props) {
         </Stack>
 
         {summary && 
-        <Paper elevation={3}>
-          <div dangerouslySetInnerHTML={{ __html: summary }} />
-        </Paper>  
+          <Paper elevation={5} sx={{backgroundColor: '#f7f7f7', p:3}}>
+            <Typography variant="h5" sx={{mb:3}}>
+              Answer Summary
+            </Typography>
+            <Typography variant="body1">
+              <div dangerouslySetInnerHTML={{ __html: summary }} />
+            </Typography>
+          </Paper> 
         }
         
         {!filteredResults ? false : (

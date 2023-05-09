@@ -6,9 +6,9 @@ from config import OPENAI_API_KEY
 # openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
-def get_summaried_answers(query, answers, word_limit=200):
+def get_summaried_answers(query, answers, word_limit=100):
   template = """\
-Answer the query in {} words in html format with reference to the given answers.
+Answer the query in {} words in well-format html with reference to the given answers.
 Query: {}
 {}
 """
