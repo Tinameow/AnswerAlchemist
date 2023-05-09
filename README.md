@@ -7,6 +7,7 @@ Open a terminal
 
 ```shell
 cd backend
+pip install -r requirements.txt
 python3 server.py
 ```
 
@@ -18,7 +19,7 @@ Open another terminal
 
 ```shell
 cd frontend
-npm build
+npm install
 npm start
 ```
 
