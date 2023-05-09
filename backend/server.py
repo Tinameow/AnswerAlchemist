@@ -22,20 +22,21 @@ def get_question(question_id):
     # use the question_id parameter to retrieve the question details from a database or other data source
     # for now, we'll just return the mock data
     # mock data
-    mock_question = {
-        "id": 1,
-        "question": {
-            "title" : "Question title",
-            "description" : "Question description",
-            "tags": ["Python", "Tuple"],
-            "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        },
-        "answers": [ {"id": 1, "answer":"A answer to the question", 
-                      "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, 
-                      {"id": 2, "answer":"Another answer to the question", 
-                      "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}],
-    }
-    return jsonify({"data": mock_question})
+    # mock_question = {
+    #     "id": 1,
+    #     "question": {
+    #         "title" : "Question title",
+    #         "description" : "Question description",
+    #         "tags": ["Python", "Tuple"],
+    #         "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #     },
+    #     "answers": [ {"id": 1, "answer":"A answer to the question", 
+    #                   "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, 
+    #                   {"id": 2, "answer":"Another answer to the question", 
+    #                   "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}],
+    # }
+    question = util.get_question(question_id)
+    return jsonify({"data": question})
 
 
 @app.route('/search', methods=['GET'])
@@ -69,7 +70,8 @@ def search():
     # mock_tags = ["Python", "Tuple", "List"]
 
     results, tags = util.get_ranked_answers(query)
-    summary = get_summaried_answers(query, results)
+    # summary = get_summaried_answers(query, results)
+    summary = ""
     return jsonify({"data": {"summary": summary, "results": results, "tags": tags}})
 
   

@@ -8,7 +8,7 @@ openai.api_key = OPENAI_API_KEY
 
 def get_summaried_answers(query, answers, word_limit=100):
   template = """\
-Answer the query in {} words in well-format html with reference to the given answers.
+Answer the query in {} words in well-format html in bullet points with references to the given answers.
 Query: {}
 {}
 """
@@ -20,7 +20,7 @@ Query: {}
            "content": template.format(word_limit, query, answers)}
       ]
   )
-  print(response)
+  # print(response)
   return response['choices'][0]['message']['content']
 
 if __name__ == "__main__":
