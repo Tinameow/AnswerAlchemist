@@ -1,4 +1,31 @@
 from BM25 import query
+import pymysql
+'''
+Tables:
+    -Questions
+    -Answers
+    -Tags
+Table describe:
+Questions(Id(PRIMARY KEY): INT, CreationDate: VAR(255), Score: INT, Title: VAR(255), Body: LONGTEXT)
+Answers(Id(PRIMARY KEY): INT, CreationDate: VAR(255), ParentId(FOREIGN KEY): INT, Score: INT, Body: LONGTEXT)
+Tags(Id(FOREIGN KEY): INT, Tag: TEXT)
+'''
+conn = pymysql.connect(
+        host= 'database-i-510.chrgejp9gwu0.us-east-1.rds.amazonaws.com', 
+        port = 3306,
+        user = 'admin', 
+        password = '123Qazwsx123!',
+        db = 'database510',
+        )
+'''
+#read the data (examples)
+def get_details():
+    cur=conn.cursor()
+    cur.execute("select Questions.Body from Answers join Questions on Answers.ParentId = Questions.Id join Tags on Tags.Id = Questions.Id where Questions.Body LIKE '%SQL%'")
+    details = cur.fetchall()
+    print(details)
+    # return details
+'''
 
 '''
 first = rankingList[0]
@@ -49,4 +76,4 @@ def get_ranked_answers(query_input: str):
 #         return filtered_list[:len(filtered_list)]
 
 
-    
+get_details()
