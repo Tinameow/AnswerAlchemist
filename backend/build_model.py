@@ -1,6 +1,6 @@
 import csv
 import re
-
+import util
 
 filepath_Q = 'archive/Questions.csv'
 filepath_A = 'archive/Answers.csv'
