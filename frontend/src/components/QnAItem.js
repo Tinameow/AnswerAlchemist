@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 const StyledCard = styled(Card)({
-  marginBottom: '1rem',
+  margin: '1rem',
   backgroundColor: '#f7f7f7',
   width: '100%',
 });

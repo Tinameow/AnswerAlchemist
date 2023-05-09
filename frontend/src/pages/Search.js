@@ -17,6 +17,7 @@ function Search(props) {
     const handleInputChange = (e) => {
       e.preventDefault();
       setSearchInput(e.target.value);
+      localStorage.setItem("input", e.target.value);
     };
   
     const handleClick = (e) => {
@@ -27,6 +28,9 @@ function Search(props) {
           setResults(data.results);
           setTags(data.tags);
           setSummary(data.summary);
+          localStorage.setItem("results", data.results);
+          localStorage.setItem("tags", data.tags);
+          localStorage.setItem("summary", data.summary);
       })
       .catch((error) => {
           console.error(error);
@@ -36,8 +40,10 @@ function Search(props) {
     const handleTagFilter = (tag) => {
       if (chosenTags.includes(tag)) {
         setChosenTags(chosenTags.filter((t) => t !== tag));
+        localStorage.setItem("chosenTags", JSON.stringify(chosenTags));
       } else {
         setChosenTags([...chosenTags, tag]);
+        localStorage.setItem("chosenTags", JSON.stringify(chosenTags));
       }
     };
 
@@ -51,11 +57,23 @@ function Search(props) {
           setResults(data.results);
           setTags(data.tags);
           setSummary(data.summary);
+          localStorage.setItem("results", JSON.stringify(data.results));
+          localStorage.setItem("tags", JSON.stringify(data.tags));
+          localStorage.setItem("summary", data.summary);
+          console.log(localStorage)
       })
       .catch((error) => {
           console.error(error);
       })
     }
+
+    // useEffect(()=>{
+    //   setSearchInput(localStorage.getItem("input") || "");
+    //   setResults(localStorage.getItem("results") ? JSON.parse(localStorage.getItem("results")): []);
+    //   setTags(localStorage.getItem("tags") ? JSON.parse(localStorage.getItem("tags")): []);
+    //   setSummary(localStorage.getItem("summary") ? localStorage.getItem("summary"): "");
+    //   setChosenTags(localStorage.getItem("chosenTags") ? JSON.parse(localStorage.getItem("chosenTags")): []);
+    // }, [])
 
     const filteredResults = results.filter((item) => {
       return chosenTags.every((tag) => item.tags.includes(tag));
@@ -71,7 +89,7 @@ function Search(props) {
           <Button variant="outlined" onClick={handleClick} color="primary">
               Search
           </Button>
-          <Box sx={{p: 3}}>
+          <Box sx={{ width: { xs: 600, sm: 700, md: 800, lg: 900, xl: 1000 }, margin: "auto" }}>
             {tags.map((tag) => (
               <Chip
                 key={tag}
@@ -90,12 +108,19 @@ function Search(props) {
         </Stack>
 
         {summary && 
-          <Paper elevation={5} sx={{backgroundColor: '#f7f7f7', p:3}}>
+          <Paper elevation={3} sx={{backgroundColor: '#e3f2ff', p:3, width: { xs: 600, sm: 700, md: 800, lg: 900, xl: 1000 }, margin: "auto"}}>
             <Typography variant="h5" sx={{mb:3}}>
               Answer Summary
             </Typography>
             <Typography variant="body1">
-              <div dangerouslySetInnerHTML={{ __html: summary }} />
+              {summary.split('\n').map((line, i) => {
+                if (line.startsWith('- ')) {
+                  return <li key={i}>{line.substr(2)}</li>
+                }
+                return <p key={i}>{line}</p>
+              })
+              }
+              {/* <div dangerouslySetInnerHTML={{ __html: summary.replace(/\n/g, "<br>") }} /> */}
             </Typography>
           </Paper> 
         }

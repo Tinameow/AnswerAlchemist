@@ -35,8 +35,10 @@ def get_question(question_id):
     #                   {"id": 2, "answer":"Another answer to the question", 
     #                   "created": datetime.now().strftime('%Y-%m-%d %H:%M:%S')}],
     # }
-    question = util.get_question(question_id)
-    return jsonify({"data": question})
+    question = util.get_ranked_answers_list(question_id)
+    # print(question["answers"])
+    question["summary"] = get_summaried_answers(question["question"]["title"] + question["question"]["description"], question["answers"])
+    return jsonify({ "data": question})
 
 
 @app.route('/search', methods=['GET'])
@@ -70,8 +72,7 @@ def search():
     # mock_tags = ["Python", "Tuple", "List"]
 
     results, tags = util.get_ranked_answers(query)
-    # summary = get_summaried_answers(query, results)
-    summary = ""
+    summary = get_summaried_answers(query, results)
     return jsonify({"data": {"summary": summary, "results": results, "tags": tags}})
 
   

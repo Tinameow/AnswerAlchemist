@@ -81,7 +81,7 @@ def get_ranked_answers_list(id):
         "tags": tagList,
         "created": details[6]
     }
-    result["answers"] = ansList
+    result["answers"] = [{"answer": answer} for answer in ansList]
     
     return result
 # def get_ranked_answers(query_input: str):

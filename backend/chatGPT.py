@@ -6,13 +6,16 @@ from config import OPENAI_API_KEY
 # openai.api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
-def get_summaried_answers(query, answers, word_limit=100):
+def get_summaried_answers(query, answers, word_limit=200):
   template = """\
-Answer the query in {} words in well-format html in bullet points with references to the given answers.
+Answer the query in {} words with bullet points.
+If the answers can be the answer for the query, summerize the answers as reference. Otherwise, simply answer the query. Provide an example if nessessary.
+
 Query: {}
+Answers:
 {}
 """
-  answers = "".join([f"Answer {answer['id']}: {answer['answer']}\n" for answer in answers])
+  answers = "".join([f"Answer {i+1}: {answer['answer']}\n" for i,answer in enumerate(answers)])
   response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=[
